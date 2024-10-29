@@ -12,6 +12,7 @@ import Signup from "./Signup";
 import Postform from "./post-form/Postform";
 import RTE from "./RTE";
 import AuthLayout from './AuthLayout'
+import SkeletonPosts from "./SkeletonPosts";
 export {
     Header,
     Footer,
@@ -27,5 +28,6 @@ export {
     RTE,
     Postform,
     AuthLayout,
+    SkeletonPosts
     //... other components go here...
 }
