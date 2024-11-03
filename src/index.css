@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Modern approach */
+body {
+    scrollbar-width: none; /* Remove scrollbar width */
+  }
+  
+  /* WebKit-specific approach */
+  ::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+  }
+  
+  /* General style for better scrolling experience */
+  body {
+    overflow-y: auto; /* Enable vertical scroll */
+    overflow-x: hidden; /* Hide horizontal scroll */
+    scroll-behavior: smooth; /* Smooth scrolling */
+  }

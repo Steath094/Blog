@@ -16,7 +16,7 @@ function Header() {
         {
             name: "Home",
             slug: "/",
-            active: true
+            active: authStatus
         },
         {
             name: "Login",
@@ -40,7 +40,7 @@ function Header() {
         },
     ]
     return (
-        <header className='py-3 shadow bg-gray-500'>
+        <header className='py-3 shadow bg-[#ffffff]'>
             <div className='container mx-auto px-4'>
                 <nav className='flex items-center justify-between'>
                     {/* Logo */}
@@ -57,7 +57,7 @@ function Header() {
                                 <li key={item.name}>
                                     <button
                                         onClick={() => navigate(item.slug)}
-                                        className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full text-white hover:text-black'
+                                        className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full text-black text-inter hover:text-black'
                                     >
                                         {item.name}
                                     </button>
@@ -78,7 +78,7 @@ function Header() {
                             className='focus:outline-none'
                         >
                             <svg
-                                className='w-6 h-6 text-white'
+                                className='w-6 h-6 text-black'
                                 fill='none'
                                 stroke='currentColor'
                                 viewBox='0 0 24 24'
@@ -107,7 +107,7 @@ function Header() {
                                                 navigate(item.slug);
                                                 toggleMobileMenu();
                                             }}
-                                            className='block w-full text-left px-6 py-2 duration-200 hover:bg-blue-100 rounded-full text-white'
+                                            className='block w-full text-left px-6 py-2 duration-200 hover:bg-blue-100 rounded-full text-black'
                                         >
                                             {item.name}
                                         </button>
