@@ -96,7 +96,7 @@ function Home() {
                 </div>
 
             {/* Post Cards Section */}
-                <div className="flex space-x-6 md:w-full w-[85%] z-10 overflow-x-scroll .no-scrollbar ">
+                <div className="flex space-x-6 md:w-3/5 w-[85%] z-10 overflow-x-scroll .no-scrollbar ">
                     {isLoading
                         ? [...Array(4)].map((_, index) => <SkeletonPostCard key={index} />)
                         : posts.map((post) => (
