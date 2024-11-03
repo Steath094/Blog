@@ -89,14 +89,14 @@ function Home() {
                     </h1>
                     <Link
                         to="/all-posts"
-                        className="mt-6 px-6 py-3 text-lg font-medium text-blue-600 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 relative right-14"
+                        className="min-w-44 mt-6 px-6 py-3 text-lg font-medium text-blue-600 bg-white rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 relative right-14"
                     >
                         See All Articles
                     </Link>
                 </div>
 
             {/* Post Cards Section */}
-                <div className="flex space-x-6 md:w-full w-3/5 overflow-x-scroll .no-scrollbar ">
+                <div className="flex space-x-6 md:w-full w-[85%] z-10 overflow-x-scroll .no-scrollbar ">
                     {isLoading
                         ? [...Array(4)].map((_, index) => <SkeletonPostCard key={index} />)
                         : posts.map((post) => (
