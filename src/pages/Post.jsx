@@ -20,7 +20,6 @@ export default function Post() {
                 if (post) {
                     setPost(post);
                     setDate(formatDate(post.$updatedAt));
-                
                 }
                 else navigate("/");
             });
@@ -50,6 +49,7 @@ export default function Post() {
         return date.toLocaleDateString('en-US', options);   
       
       }
+      const userName = post?.user ?? "Default User";
     return post ? (
         <div className="flex justify-center min-h-screen w-full bg-[#eeeeee]">
             {/* Main Content */}
@@ -63,7 +63,7 @@ export default function Post() {
                             className="md:w-10 md:h-10 w-8 h-8 rounded-full mr-3"
                         />
                         <div>
-                            <p className="text-sm font-medium text-gray-800">Joana Marie Jones</p>
+                            <p className="text-sm font-medium text-gray-800">{userName}</p>
                             <p className="text-xs text-gray-500">{date}</p>
                         </div>
                     </div>
