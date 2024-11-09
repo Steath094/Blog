@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import authService from './appwrite/auth'
 import { login, logout } from './store/authSlice';
 import { Outlet } from 'react-router-dom';
-import { Footer,Header } from './components';
+import { Footer,Header, Loader } from './components';
 function App() {
   const [loading,setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ function App() {
         <Footer/>
       </div>
     </div>
-  ): null
+  ): <Loader/>
 }
 
 export default App

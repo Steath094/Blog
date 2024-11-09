@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import service from '../appwrite/config'
 import { PostCard, Container } from '../components'
-
+import { useSelector } from 'react-redux';
 const Skeleton = () => {
     return (
 <div className='w-full h-screen py-8'>
@@ -49,16 +49,37 @@ const Skeleton = () => {
 };
 function AllPosts() {
     
-    const [isLoading, setIsLoading] = useState(true); // Add loading state
-    const [posts,setPosts] = useState([])
-    useEffect(()=>{
-        service.getPosts().then((posts)=>{
-            if (posts) {
-                setPosts(posts.documents)
-            }
-            setIsLoading(false); // Set loading to false after fetching
-        })
-    },[])
+    const [posts, setPosts] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const authStatus = useSelector((state) => state.auth.status);
+    const postState = useSelector((state) => state.post.posts);
+    const fetchDocuments = async () => { 
+        setIsLoading(true);
+        try {
+          const response = await service.getPosts();
+          const { documents } = response;
+          if (documents?.length) {
+            setPosts((prevPosts) => {
+              const newPosts = documents.filter(
+                (doc) => !prevPosts.some((post) => post.$id === doc.$id)
+              );
+              return [...prevPosts, ...newPosts];
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching documents:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      useEffect(() => {
+        if (!authStatus && !postState.length) {
+          fetchDocuments();
+        } else {
+          if (!postState?.length) fetchDocuments();
+          else setPosts(postState);
+        }
+      }, [authStatus]);
     
     return (
         <div className='w-full py-8'>

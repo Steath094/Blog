@@ -2,12 +2,26 @@ import React, {useState} from 'react'
 import {Container,LogoutBtn, Logo} from "../index"
 import {Link, useNavigate} from "react-router-dom"
 import {useSelector} from "react-redux"
+import { AuthService } from '../../appwrite/auth'
 
 function Header() {
     const authStatus = useSelector((state)=> state.auth.status)
     const navigate = useNavigate()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    // const navigate = useNavigate();
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const userData = useSelector((state) => state.auth.userData);
+    
+    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+
+    const openProfileModal = () => {
+        setDropdownOpen(false); // Close dropdown when profile is clicked
+        setModalOpen(true); // Open profile modal
+    };
+
+    const closeModal = () => {
+        setModalOpen(false); // Close modal
+    };
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -44,7 +58,7 @@ function Header() {
             <div className='container mx-auto px-4'>
                 <nav className='flex items-center justify-between'>
                     {/* Logo */}
-                    <div className='mr-4'>
+                    <div className='mx-8'>
                         <Link to='/'>
                             <Logo />
                         </Link>
@@ -65,9 +79,62 @@ function Header() {
                             ) : null
                         )}
                         {authStatus && (
-                            <li>
-                                <LogoutBtn />
-                            </li>
+                           <li className="relative inline-block">
+                           {authStatus && (
+                               <div
+                                   className="w-8 h-8 rounded-full bg-cover cursor-pointer"
+                                   style={{ backgroundImage: `url(../images/userlogo.png)` }}
+                                   onClick={toggleDropdown}
+                               ></div>
+                           )}
+               
+                           {/* Dropdown Menu */}
+                           {dropdownOpen && (
+                               <ul className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden z-20">
+                                   <li
+                                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                       onClick={openProfileModal}
+                                   >
+                                       User Profile
+                                   </li>
+                                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                                       <LogoutBtn />
+                                   </li>
+                               </ul>
+                           )}
+               
+                           {/* Profile Modal */}
+                           {modalOpen && (
+                               <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30">
+                                   <div className="bg-white p-6 rounded-lg w-96">
+                                       <div className="flex justify-between items-center">
+                                           <h2 className="text-xl font-semibold">User Profile</h2>
+                                           <button onClick={closeModal} className="text-gray-500">
+                                               ✖
+                                           </button>
+                                       </div>
+                                       <div className="mt-4 flex items-center space-x-4">
+                                           <div
+                                               className="w-16 h-16 rounded-full bg-cover"
+                                               style={{ backgroundImage: `url(../images/userlogo.png)` }}
+                                           ></div>
+                                           <div>
+                                               <p className="font-medium">{userData.name}</p>
+                                               <p className="text-sm text-gray-600">{userData.email}</p>
+                                           </div>
+                                       </div>
+                                       <div className="mt-6 text-right">
+                                           <button
+                                               onClick={closeModal}
+                                               className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700"
+                                           >
+                                               Close
+                                           </button>
+                                       </div>
+                                   </div>
+                               </div>
+                           )}
+                       </li>
                         )}
                     </ul>
 
@@ -115,9 +182,50 @@ function Header() {
                                 ) : null
                             )}
                             {authStatus && (
-                                <li>
+                                <>
+                                {authStatus && (
+                                    <li
+                                    className="block w-full text-left px-6 py-2 duration-200 hover:bg-blue-100 rounded-full text-black"
+                                    onClick={openProfileModal}>
+                                    User Profile
+                                    </li>
+                                )}
+                                {authStatus && (
+                                    <li className="block w-full text-left px-6 py-2 duration-200 hover:bg-blue-100 rounded-full text-black">
                                     <LogoutBtn />
                                 </li>
+                                )}
+                                {modalOpen && (
+                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-30">
+                                        <div className="bg-white p-6 rounded-lg w-96">
+                                            <div className="flex justify-between items-center">
+                                                <h2 className="text-xl font-semibold">User Profile</h2>
+                                                <button onClick={closeModal} className="text-gray-500">
+                                                    ✖
+                                                </button>
+                                            </div>
+                                            <div className="mt-4 flex items-center space-x-4">
+                                                <div
+                                                    className="w-16 h-16 rounded-full bg-cover"
+                                                    style={{ backgroundImage: `url(../images/userlogo.png)` }}
+                                                ></div>
+                                                <div>
+                                                    <p className="font-medium">{userData.name}</p>
+                                                    <p className="text-sm text-gray-600">{userData.email}</p>
+                                                </div>
+                                            </div>
+                                            <div className="mt-6 text-right">
+                                                <button
+                                                    onClick={closeModal}
+                                                    className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700"
+                                                >
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                </>
                             )}
                         </ul>
                     </div>

@@ -58,7 +58,7 @@ export default function Post() {
                     {/* Author and Title Section */}
                     <div className="flex items-center mb-4">
                         <img
-                            src="/images/userlogo.png"
+                            src="/images/userlogo.jpg"
                             alt="Author Avatar"
                             className="md:w-10 md:h-10 w-8 h-8 rounded-full mr-3"
                         />

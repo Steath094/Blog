@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import service from '../appwrite/config';
 
-import { Container, PostCard } from '../components';
+import { Container, Loader, PostCard } from '../components';
 import { Link } from 'react-router-dom';
 import {Button} from '../components';
 // Skeleton Loading Component
@@ -43,17 +44,44 @@ const SkeletonPostCard = () => (
 
 function Home() {
     const [posts, setPosts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); // Add loading state
-
-    useEffect(() => {
-        service.getPosts().then((response) => {
-            if (response) {
-                setPosts(response.documents);
-            }
-            setIsLoading(false); // Set loading to false after fetching
-        });
-    }, []);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const authStatus = useSelector((state) => state.auth.status);
+    const postState = useSelector((state) => state.post.posts);
+    const fetchDocuments = async () => { 
+        setIsLoading(true);
+        try {
+          const response = await service.getPosts();
+          const { documents } = response;
+          if (documents?.length) {
+            setPosts((prevPosts) => {
+              const newPosts = documents.filter(
+                (doc) => !prevPosts.some((post) => post.$id === doc.$id)
+              );
+              return [...prevPosts, ...newPosts];
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching documents:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      useEffect(() => {
+        if (!authStatus && !postState.length) {
+          fetchDocuments();
+        } else {
+          if (!postState?.length) fetchDocuments();
+          else setPosts(postState);
+        }
+      }, [authStatus]);
+    // useEffect(() => {
+    //     service.getPosts().then((response) => {
+    //         if (response) {
+    //             setPosts(response.documents);
+    //         }
+    //         setIsLoading(false); // Set loading to false after fetching
+    //     });
+    // }, []);
     if (posts.length === 0 && !isLoading) {
         return (
             <div className="flex  justify-center items-center flex-wrap w-full text-center bg-[url('/images/Home.png')] bg-cover bg-center min-h-[85vh]">
